@@ -11,20 +11,53 @@ if($RequestMethod == "POST") {
 
 // Get the Room(s) - either room id or null to return all the rooms
 if($RequestMethod == "GET") {
-    
+    if(isset($_GET['id'])) {
+        echo json_encode(GetRoom($_GET['id']));
+    }else {
+        echo json_encode(GetRoom(null));
+    }
+}
+
+// Update Room (requires room id and updates)
+if($RequestMethod == "UPDATE") {
+
+}
+
+// Delete Room (requires room id)
+if($RequestMethod == "DELETE") {
+
+    if(!isset($_GET["id"])) {
+        echo "Error!";
+        return;
+    }
+
+    $statement = $db->query(
+        sprintf("DELETE FROM confRoom WHERE room_number = %s",
+        $db->real_escape_string($_GET["id"])));
+
+    if(!$statement) {
+        echo "Error!";
+    }else {
+        echo "Done!";
+    }
+}
+
+function GetRoom( $id ) {
     $statement = null;
 
-    if(isset($_GET["id"])) {
+    $db = OpenCon();
+
+    if($id != null) {
         $statement = $db->query(
             sprintf("SELECT * FROM confRoom WHERE room_number = %s",
-            $db->real_escape_string($_GET["id"])));
+            $db->real_escape_string($id)));
     }else {
         $statement = $db->query("SELECT * FROM confRoom");
     }
 
     if(!$statement) {
         echo "Error!";
-        return;
+        return json_encode(null);
     }
 
     $resultArray = array();
@@ -38,17 +71,9 @@ if($RequestMethod == "GET") {
         $index++;
     }
 
-    echo json_encode($resultArray); // Parse to JSON and print.
-}
+    CloseCon($db);
 
-// Update Room (requires room id and updates)
-if($RequestMethod == "UPDATE") {
-
-}
-
-// Delete Room (requires room id)
-if($RequestMethod == "DELETE") {
-
+    return $resultArray; // Parse to JSON and print.
 }
 
 ?>
