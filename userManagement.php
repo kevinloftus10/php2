@@ -1,5 +1,7 @@
 <?php 
+include("connect.php");
 
+$RequestMethod = $_SERVER["REQUEST_METHOD"];
 
 // Create User 
 if($RequestMethod == "POST") {
