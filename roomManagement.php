@@ -6,11 +6,22 @@ $RequestMethod = $_SERVER["REQUEST_METHOD"];
 
 // Create Room 
 if($RequestMethod == "POST") {
-    echo "Posted!";
+    
+    if( !isset($_POST["room_number"]) || !isset($_POST["location"]) || !isset($_POST["capacity"]) ) {
+        return "Error!";
+    }
+
+    $obj = [];
+    $obj["room_number"] = $_POST["room_number"];
+    $obj["location"] = $_POST["location"];
+    $obj["capacity"] = $_POST["capacity"];
+
+    echo CreateRoom($obj);
 }
 
 // Get the Room(s) - either room id or null to return all the rooms
 if($RequestMethod == "GET") {
+
     if(isset($_GET['id'])) {
         echo json_encode(GetRoom($_GET['id']));
     }else {
@@ -20,6 +31,17 @@ if($RequestMethod == "GET") {
 
 // Update Room (requires room id and updates)
 if($RequestMethod == "UPDATE") {
+
+    if( !isset($_POST["room_number"]) || !isset($_POST["location"]) || !isset($_POST["capacity"]) ) {
+        return "Error!";
+    }
+
+    $obj = [];
+    $obj["room_number"] = $_POST["room_number"];
+    $obj["location"] = $_POST["location"];
+    $obj["capacity"] = $_POST["capacity"];
+
+    echo UpdateRoom($obj);
 
 }
 
@@ -31,22 +53,16 @@ if($RequestMethod == "DELETE") {
         return;
     }
 
-    $statement = $db->query(
-        sprintf("DELETE FROM confRoom WHERE room_number = %s",
-        $db->real_escape_string($_GET["id"])));
-
-    if(!$statement) {
-        echo "Error!";
-    }else {
-        echo "Done!";
-    }
+    echo DeleteRoom($_GET['id']);
 }
 
 function GetRoom( $id ) {
     $statement = null;
 
+    // Open connection to the database
     $db = OpenCon();
 
+    // Check to see if the requester is wanting a single room or all of them
     if($id != null) {
         $statement = $db->query(
             sprintf("SELECT * FROM confRoom WHERE room_number = %s",
@@ -55,11 +71,15 @@ function GetRoom( $id ) {
         $statement = $db->query("SELECT * FROM confRoom");
     }
 
+    // Close connection
+    CloseCon($db);
+
+    // Check if the query successed
     if(!$statement) {
-        echo "Error!";
-        return json_encode(null);
+        return false;
     }
 
+    // Build the json array
     $resultArray = array();
     $index = 0;
     while($row = $statement->fetch_object()) {
@@ -71,9 +91,53 @@ function GetRoom( $id ) {
         $index++;
     }
 
+    return $resultArray;
+}
+
+function DeleteRoom( $id ) {
+
+    if($id == null) {
+        return false;
+    }
+
+    $db = OpenCon();
+
+    $statement = $db->query(
+        sprintf("DELETE FROM confRoom WHERE room_number = %s",
+        $db->real_escape_string($_GET["id"])));
+
     CloseCon($db);
 
-    return $resultArray; // Parse to JSON and print.
+    if(!$statement) {
+        return false;
+    } 
+
+    return true;
+}
+
+function CreateRoom( $obj ) {
+
+    // Make sure everything required is there.
+    if( !isset($obj["room_number"]) || !isset($obj["location"]) || !isset($obj["capacity"]) ) {
+        return null;
+    }
+
+    // Insert into prepared statement here.
+
+
+    // bool to check if it was inserted
+
+    // if it wasn't because they have duplicate room number return false;
+
+    // After return true;
+}
+
+function UpdateRoom( $obj ) {
+
+    if( !isset($obj["room_number"]) || !isset($obj["location"]) || !isset($obj["capacity"]) ) {
+        return null;
+    }
+
 }
 
 ?>
