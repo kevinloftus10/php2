@@ -5,7 +5,7 @@ $RequestMethod = $_SERVER["REQUEST_METHOD"];
 
 
 // Create Room 
-if($RequestMethod == "POST") {
+if($RequestMethod == "PUT") {
     
     if( !isset($_POST["room_number"]) || !isset($_POST["location"]) || !isset($_POST["capacity"]) ) {
         return "Error!";
@@ -30,10 +30,11 @@ if($RequestMethod == "GET") {
 }
 
 // Update Room (requires room id and updates)
-if($RequestMethod == "UPDATE") {
+if($RequestMethod == "POST") {
 
     if( !isset($_POST["room_number"]) || !isset($_POST["location"]) || !isset($_POST["capacity"]) ) {
-        return "Error!";
+        echo "Error!";
+        return;
     }
 
     $obj = [];
@@ -138,6 +139,15 @@ function UpdateRoom( $obj ) {
         return null;
     }
 
+    $db = OpenCon();
+    $statement = $db->query(
+        sprintf("UPDATE confRoom SET location = '%s', capacity = %s WHERE room_number = %s",
+        $db->real_escape_string($obj['location']), $db->real_escape_string($obj['capacity']), $db->real_escape_string($obj['room_number'])
+        )
+    );
+    CloseCon($db);
+
+    return $statement;
 }
 
 ?>
