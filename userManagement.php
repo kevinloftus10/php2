@@ -62,6 +62,23 @@ function SignUp( $obj ) {
         return false;
     }
 
+    $query = "INSERT INTO user_reg (username, name, password, email, phoneNumber) VALUES (?, ?, ?, ?, ?)";
+    $db = OpenCon();
+
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('sssss', $obj["username"], $obj["name"], $obj["password"], $obj["email"], $obj["phoneNumber"]);
+    $stmt->execute();
+
+    CloseCon($db);
+
+    if ($stmt->affected_rows >0) {
+        echo "<p>User information submitted successfully!</p>";
+        return true;
+    } else {
+        echo "<p>An error has occured. <br / Please try again later.</p>";
+        return false;
+    }
+
 }
 
 function GetUsers($username) {
