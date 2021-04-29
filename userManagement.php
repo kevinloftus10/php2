@@ -4,7 +4,7 @@ include("connect.php");
 $RequestMethod = $_SERVER["REQUEST_METHOD"];
 
 // Create User 
-if($RequestMethod == "POST") {
+if($RequestMethod == "PUT") {
     echo "Posted!";
 }
 
@@ -14,7 +14,7 @@ if($RequestMethod == "GET") {
 }
 
 // Update User
-if($RequestMethod == "UPDATE") {
+if($RequestMethod == "POST") {
 
 }
 
@@ -23,6 +23,20 @@ if($RequestMethod == "DELETE") {
 
 }
 
+function SignUp( $obj ) {
 
+}
+
+function GetUsers() {
+
+}
+
+function UpdateUser( $obj ) {
+
+}
+
+function DeleteUser( $id ) {
+    
+}
 
 ?>

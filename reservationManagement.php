@@ -4,7 +4,7 @@ include("connect.php");
 $RequestMethod = $_SERVER["REQUEST_METHOD"];
 
 // Create Reservation
-if($RequestMethod == "POST") {
+if($RequestMethod == "PUT") {
     echo "Posted!";
 }
 
@@ -14,7 +14,7 @@ if($RequestMethod == "GET") {
 }
 
 // Update Reservation
-if($RequestMethod == "UPDATE") {
+if($RequestMethod == "POST") {
 
 }
 
@@ -23,6 +23,21 @@ if($RequestMethod == "DELETE") {
 
 }
 
+function CreateReservation( $obj ) {
 
+}
+
+function GetReservations( $confRoomId ) {
+
+}
+
+function UpdateReservation( $obj ) {
+
+
+}
+
+function DeleteReservation( $id ) {
+
+}
 
 ?>
