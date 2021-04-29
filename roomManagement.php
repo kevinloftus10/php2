@@ -118,21 +118,21 @@ function DeleteRoom( $id ) {
 
 function CreateRoom( $obj ) {
 
-    // Make sure everything required is there.
     if( !isset($obj["room_number"]) || !isset($obj["location"]) || !isset($obj["capacity"]) ) {
         return null;
     }
 
-    // Insert into prepared statement here.
     $query = "INSERT INTO confRoom (room_number, location, capacity) VALUES (?, ?, ?)";
 	
     $db = OpenCon();
-	$stmt = $db->prepare($query);
+
+    $stmt = $db->prepare($query);
 	$stmt->bind_param('ssi', $obj["room_number"], $obj["location"], $obj["capacity"]);
-	
-	$stmt->execute();
+    $stmt->execute();
+
     CloseCon($db);
-	if ($stmt->affected_rows > 0) {
+
+    if ($stmt->affected_rows > 0) {
 		echo "<p>User information submitted successfully!</p>";
         return true;
 	} else {
@@ -140,12 +140,7 @@ function CreateRoom( $obj ) {
 		Please try again later.</p>";
         return false;
 	}
-    
-    // bool to check if it was inserted
 
-    // if it wasn't because they have duplicate room number return false;
-
-    // After return true;
 }
 
 function UpdateRoom( $obj ) {
