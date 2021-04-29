@@ -105,7 +105,7 @@ function DeleteRoom( $id ) {
 
     $statement = $db->query(
         sprintf("DELETE FROM confRoom WHERE room_number = %s",
-        $db->real_escape_string($_GET["id"])));
+        $db->real_escape_string($id)));
 
     CloseCon($db);
 

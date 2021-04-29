@@ -54,6 +54,13 @@ if($RequestMethod == "POST") {
 // Delete User
 if($RequestMethod == "DELETE") {
 
+    if(!isset($_GET["id"])) {
+        echo "Error!";
+        return;
+    }
+
+    echo DeleteUser($_GET["id"]);
+
 }
 
 function SignUp( $obj ) {
@@ -123,7 +130,7 @@ function UpdateUser( $obj ) {
 
     $db = OpenCon();
     $statement = $db->query(
-        sprintf("UPDATE user_reg SET name = '%s', password = %s, email = %s, phoneNumber = %s WHERE username = %s",
+        sprintf("UPDATE user_reg SET name = %s, password = %s, email = %s, phoneNumber = %s WHERE username = %s",
         $db->real_escape_string($obj['name']), $db->real_escape_string($obj['email']), $db->real_escape_string($obj['phoneNumber']), $db->real_escape_string($obj['username']) 
         )
     );
@@ -134,6 +141,24 @@ function UpdateUser( $obj ) {
 }
 
 function DeleteUser( $id ) {
+
+    if($id == null) {
+        return false;
+    }
+
+    $db = OpenCon();
+
+    $statement = $db->query(
+        sprintf("DELETE FROM user_reg WHERE username = '%s'",
+        $db->real_escape_string($id)));
+    
+    CloseCon($db);
+
+    if(!$statement) {
+        return false;
+    }
+
+    return true;
     
 }
 
