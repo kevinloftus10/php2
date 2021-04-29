@@ -6,6 +6,13 @@ $RequestMethod = $_SERVER["REQUEST_METHOD"];
 // Create User 
 if($RequestMethod == "PUT") {
     echo "Posted!";
+
+    if( !isset($_POST["username"]) || !isset($_POST["name"]) || !isset($_POST["password"]) || !isset($_POST["email"]) || !isset($_POST["phoneNumber"])){
+        return;
+    }
+
+
+
 }
 
 // Get the User(s)
@@ -20,6 +27,11 @@ if($RequestMethod == "GET") {
 // Update User
 if($RequestMethod == "POST") {
 
+    if( !isset($_POST["username"]) || !isset($_POST["name"]) || !isset($_POST["password"]) || !isset($_POST["email"]) || !isset($_POST["phoneNumber"])){
+        return;
+    }
+    
+
 }
 
 // Delete User
@@ -28,6 +40,10 @@ if($RequestMethod == "DELETE") {
 }
 
 function SignUp( $obj ) {
+
+    if( !isset($obj["username"]) || !isset($obj["name"]) || !isset($obj["password"]) || !isset($obj["email"]) || !isset($obj["phoneNumber"])){
+        return false;
+    }
 
 }
 
