@@ -5,18 +5,19 @@ $RequestMethod = $_SERVER["REQUEST_METHOD"];
 
 // Create User 
 if($RequestMethod == "PUT") {
-    echo "Posted!";
 
-    if( !isset($_POST["username"]) || !isset($_POST["name"]) || !isset($_POST["password"]) || !isset($_POST["email"]) || !isset($_POST["phoneNumber"])){
+    parse_str(file_get_contents("php://input"),$post_vars);
+
+    if( !isset($post_vars["username"]) || !isset($post_vars["name"]) || !isset($post_vars["password"]) || !isset($post_vars["email"]) || !isset($post_vars["phoneNumber"])){
         return;
     }
 
     $obj = [];
-    $obj["username"] = $_POST["username"];
-    $obj["name"] = $_POST["name"];
-    $obj["password"] = $_POST["password"];
-    $obj["email"] = $_POST["email"];
-    $obj["phoneNumber"] = $_POST["phoneNumber"];
+    $obj["username"] = $post_vars["username"];
+    $obj["name"] = $post_vars["name"];
+    $obj["password"] = $post_vars["password"];
+    $obj["email"] = $post_vars["email"];
+    $obj["phoneNumber"] = $post_vars["phoneNumber"];
 
     echo SignUp($obj);
 
@@ -101,6 +102,17 @@ function UpdateUser( $obj ) {
     if( !isset($obj["username"]) || !isset($obj["name"]) || !isset($obj["password"]) || !isset($obj["email"]) || !isset($obj["phoneNumber"])){
         return false;
     }
+
+
+    $db = OpenCon();
+    $statement = $db->query(
+        sprintf("UPDATE user_reg SET name = '%s', password = %s, email = %s, phoneNumber = %s WHERE username = %s",
+        $db->real_escape_string($obj['name']), $db->real_escape_string($obj['email']), $db->real_escape_string($obj['phoneNumber']), $db->real_escape_string($obj['username']) 
+        )
+    );
+    CloseCon($db);
+
+    return $statement;
 
 }
 
