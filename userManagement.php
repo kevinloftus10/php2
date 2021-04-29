@@ -39,6 +39,14 @@ if($RequestMethod == "POST") {
         return;
     }
     
+    $obj = [];
+    $obj["username"] = $_POST["username"];
+    $obj["name"] = $_POST["name"];
+    $obj["password"] = $_POST["password"];
+    $obj["email"] = $_POST["email"];
+    $obj["phoneNumber"] = $_POST["phoneNumber"];
+
+    echo UpdateUser($obj);
 
 }
 
