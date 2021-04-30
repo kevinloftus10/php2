@@ -3,9 +3,9 @@ include("connect.php");
 
 function SignUp( $obj ) {
 
-if( !isset($obj["username"]) || !isset($obj["name"]) || !isset($obj["password"]) || !isset($obj["email"]) || !isset($obj["phoneNumber"])){
+if(!validObj($obj)){
     return false;
-}
+} 
 
 $query = "INSERT INTO user_reg (username, name, password, email, phoneNumber) VALUES (?, ?, ?, ?, ?)";
 $db = OpenCon();
@@ -59,10 +59,9 @@ return $resultArray;
 
 function UpdateUser( $obj ) {
 
-if( !isset($obj["username"]) || !isset($obj["name"]) || !isset($obj["password"]) || !isset($obj["email"]) || !isset($obj["phoneNumber"])){
+if(!validObj($obj)){
     return false;
-}
-
+} 
 
 $db = OpenCon();
 $statement = $db->query(
@@ -97,4 +96,17 @@ if(!$statement) {
 return true;
 
 }
+
+function validObj($obj) {
+    if( !isset($obj["username"]) || !isset($obj["name"]) || !isset($obj["password"]) || !isset($obj["email"]) || !isset($obj["phoneNumber"])){
+        return false;
+    }
+    
+    if( $obj["username"] = "" || $obj["name"] = "" || $obj["password"] = "" || $obj["email"] = "" || $obj["phoneNumber"] = ""){
+        return false;
+    }
+
+    return true;
+}
+
 ?>
