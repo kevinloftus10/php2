@@ -39,8 +39,15 @@
 	foreach( GetRoom(null) as $val ) {
 		echo $val["room_number"];
 	}
+	
 
 ?>
+
+<form action="/action_page.php">
+  <label for="appt">Select a time:</label>
+  <input type="time" id="appt" name="appt">
+  <input type="submit">
+</form>
 
 </body>
 
