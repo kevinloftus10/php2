@@ -1,3 +1,10 @@
+
+<?php
+
+	include ("../../private/roomManagement.php");
+
+?>
+
 <!doctype html>
 <html lang ="en">
 <head>
@@ -23,3 +30,18 @@
 		</style>
 		
 </head>
+
+<body>
+
+
+<?php
+
+	foreach( GetRoom(null) as $val ) {
+		echo $val["room_number"];
+	}
+
+?>
+
+</body>
+
+</html>
