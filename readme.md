@@ -10,6 +10,7 @@ IMPORTANT: This must by your own code. There are many code samples available on 
 Requirements:
 
 The application should allow a user to maintain a list of conference rooms.
+
 The application should allow a user to reserve a conference room for a specified date and time range.
 The application should allow a user to select a conference room from the list of conference rooms and specify the date and time range for their reservation.
 The specified date and time range for the reservation should include the start and end date and times.

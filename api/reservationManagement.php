@@ -1,5 +1,5 @@
 <?php 
-include("connect.php");
+include("../private/connect.php");
 
 $RequestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -27,7 +27,7 @@ function CreateReservation( $obj ) {
 
 }
 
-echo json_encode (GetReservations(null));
+echo json_encode (GetReservations(10));
 
 function GetReservations( $confRoomId ) {
 
@@ -40,7 +40,7 @@ function GetReservations( $confRoomId ) {
     if($confRoomId != null) {
         $statement = $db->query(
             sprintf("SELECT * FROM reservations WHERE room_number = '%s'",
-            $db->real_escape_string($id)));
+            $db->real_escape_string($confRoomId)));
     }else {
         $statement = $db->query("SELECT * FROM reservations");
     }
