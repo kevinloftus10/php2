@@ -1,5 +1,7 @@
 <?php
 
+
+
 include("connect.php");
 
 function CreateReservation( $obj ) {
@@ -11,9 +13,6 @@ function CreateReservation( $obj ) {
     
 
 }
-
-$test = GetReservations(null)[0];
-var_dump( new DateTime($test['date'] . "T" . $test['start_time']));
 
 function GetReservations( $confRoomId ) {
 
@@ -54,7 +53,7 @@ function GetReservations( $confRoomId ) {
         $index++;
     }
 
-
+    usort($resultArray, "compareReservationDates");
 
 
     return $resultArray;
@@ -64,10 +63,11 @@ function GetReservations( $confRoomId ) {
 
 function compareReservationDates($Obj, $ObjToCompare) {
 
-// Datetime
-    $currentDateTime = new DateTime('NOW');
+    $difFromObj = new DateTime($Obj['date'] . "T" . $Obj['start_time']);
 
-    $difFromObj = new DateTime($Obj['date'] )
+    $difFromObjToCompare =  new DateTime($ObjToCompare['date'] . "T" . $ObjToCompare['start_time']);
+
+    return ($difFromObj < $difFromObjToCompare) ? -1 : 1;
 
 }
 
