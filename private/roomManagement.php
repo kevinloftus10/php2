@@ -63,7 +63,11 @@ function DeleteRoom( $id ) {
 function CreateRoom( $obj ) {
 
     if( !isset($obj["room_number"]) || !isset($obj["location"]) || !isset($obj["capacity"]) ) {
-        return null;
+        return false;
+    }
+
+    if( $obj["room_number"] == '' || $obj["location"] == '' || $obj["capacity"] == '' ) {
+        return false;
     }
 
     $query = "INSERT INTO confRoom (room_number, location, capacity) VALUES (?, ?, ?)";

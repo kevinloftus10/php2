@@ -3,6 +3,12 @@
 
 	include ("../../private/roomManagement.php");
 
+	$RequestMethod = $_SERVER["REQUEST_METHOD"];
+	
+	if($RequestMethod == "POST") {
+		echo "POSTED";
+	}
+
 ?>
 
 <!doctype html>
@@ -34,16 +40,23 @@
 <body>
 
 
-<?php
+
+
+<form action="" method="POST">
+
+  <label for="room">Please Select a room</label>
+<select name="room" id="room">
+	
+	<?php
 
 	foreach( GetRoom(null) as $val ) {
-		echo $val["room_number"];
+		echo "<option value='" . $val["room_number"] . "'>" . $val["room_number"] . " @ " . $val["location"] . "</option>";
 	}
 	
 
-?>
-
-<form action="/action_page.php">
+	?>
+</select>
+</br>
   <label for="appt">Select a time:</label>
   <input type="time" id="appt" name="appt">
   <input type="submit">

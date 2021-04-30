@@ -4,6 +4,12 @@ include("connect.php");
 
 function CreateReservation( $obj ) {
 
+    if(!isset($obj["username"]) || !isset($obj["room_number"]) || !isset($obj["date"]) || !isset($obj["start_time"]) || !isset($obj["end_time"])) {
+        return false;
+    }
+
+    
+
 }
 
 function GetReservations( $confRoomId ) {
