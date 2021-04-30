@@ -24,10 +24,10 @@ function GetReservations( $confRoomId ) {
     // Check to see if the requester is a single reservation or multiple
     if($confRoomId != null) {
         $statement = $db->query(
-            sprintf("SELECT * FROM reservations WHERE room_number = %s",
+            sprintf("SELECT * FROM reservations WHERE room_number = %s AND date < " . new DateTime("NOW"),
             $db->real_escape_string($confRoomId)));
     }else {
-        $statement = $db->query("SELECT * FROM reservations");
+        $statement = $db->query("SELECT * FROM reservations WHERE date < ". new DateTime("NOW"));
     }
 
  
