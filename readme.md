@@ -10,20 +10,33 @@ IMPORTANT: This must by your own code. There are many code samples available on 
 Requirements:
 
 The application should allow a user to maintain a list of conference rooms.
+
 The application should allow a user to reserve a conference room for a specified date and time range.
+
 The application should allow a user to select a conference room from the list of conference rooms and specify the date and time range for their reservation.
+
 The specified date and time range for the reservation should include the start and end date and times.
 Only allow reservations on the same day. Reservations cannot span days.
+
 Only allow reservations during the business hours of 8:00am to 5:00pm on weekdays.
+
 Do not allow reservations outside of business hours or during the weekends.
+
 Verify that all user input is correct.
+
 Display error messages where appropriate.
+
 Create a new table in your database to store a list of conference rooms.
+
 Insert at least three conference rooms to start with.
 Create the web pages necessary to list, add and delete conference rooms.
+
 Create a new table in your database to store the conference room reservation schedules.
+
 Create the web pages necessary to list, add and delete conference room reservations.
+
 The list of conference room reservations should be sorted in date and start time order.
+
 Extra Credit:
 
 Only allow reservations during dates and times that are not already reserved. Conference rooms cannot be double booked.
