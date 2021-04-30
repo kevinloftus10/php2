@@ -13,7 +13,7 @@ function CreateReservation( $obj ) {
 }
 
 $test = GetReservations(null)[0];
-echo new DateTime($test['date'] . "T" . $test['start_time']);
+var_dump( new DateTime($test['date'] . "T" . $test['start_time']));
 
 function GetReservations( $confRoomId ) {
 
