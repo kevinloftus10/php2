@@ -27,8 +27,6 @@ function CreateReservation( $obj ) {
 
 }
 
-echo json_encode (GetReservations(10));
-
 function GetReservations( $confRoomId ) {
 
     $statement = null;
