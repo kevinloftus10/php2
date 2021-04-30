@@ -12,6 +12,9 @@ function CreateReservation( $obj ) {
 
 }
 
+$test = GetReservations(null)[0];
+echo new DateTime($test['date'] . "T" . $test['start_time']);
+
 function GetReservations( $confRoomId ) {
 
     $statement = null;
@@ -51,8 +54,20 @@ function GetReservations( $confRoomId ) {
         $index++;
     }
 
+
+
+
     return $resultArray;
 
+
+}
+
+function compareReservationDates($Obj, $ObjToCompare) {
+
+// Datetime
+    $currentDateTime = new DateTime('NOW');
+
+    $difFromObj = new DateTime($Obj['date'] )
 
 }
 
