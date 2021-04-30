@@ -1,5 +1,6 @@
 <?php
-include("connect.php");
+
+include_once("connect.php");
 
 function SignUp( $obj ) {
 

@@ -2,7 +2,7 @@
 
 
 
-include("connect.php");
+include_once("connect.php");
 
 function CreateReservation( $obj ) {
 
