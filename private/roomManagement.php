@@ -1,61 +1,5 @@
-<?php 
+<?php
 include("connect.php");
-
-$RequestMethod = $_SERVER["REQUEST_METHOD"];
-
-
-// Create Room 
-if($RequestMethod == "PUT") {
-    
-    if( !isset($_POST["room_number"]) || !isset($_POST["location"]) || !isset($_POST["capacity"]) ) {
-        return "Error!";
-    }
-
-    $obj = [];
-    $obj["room_number"] = $_POST["room_number"];
-    $obj["location"] = $_POST["location"];
-    $obj["capacity"] = $_POST["capacity"];
-
-    echo CreateRoom($obj);
-}
-
-// Get the Room(s) - either room id or null to return all the rooms
-if($RequestMethod == "GET") {
-
-    if(isset($_GET['id'])) {
-        echo json_encode(GetRoom($_GET['id']));
-    }else {
-        echo json_encode(GetRoom(null));
-    }
-}
-
-// Update Room (requires room id and updates)
-if($RequestMethod == "POST") {
-
-    if( !isset($_POST["room_number"]) || !isset($_POST["location"]) || !isset($_POST["capacity"]) ) {
-        echo "Error!";
-        return;
-    }
-
-    $obj = [];
-    $obj["room_number"] = $_POST["room_number"];
-    $obj["location"] = $_POST["location"];
-    $obj["capacity"] = $_POST["capacity"];
-
-    echo UpdateRoom($obj);
-
-}
-
-// Delete Room (requires room id)
-if($RequestMethod == "DELETE") {
-
-    if(!isset($_GET["id"])) {
-        echo "Error!";
-        return;
-    }
-
-    echo DeleteRoom($_GET['id']);
-}
 
 function GetRoom( $id ) {
     $statement = null;
@@ -105,7 +49,7 @@ function DeleteRoom( $id ) {
 
     $statement = $db->query(
         sprintf("DELETE FROM confRoom WHERE room_number = %s",
-        $db->real_escape_string($_GET["id"])));
+        $db->real_escape_string($id)));
 
     CloseCon($db);
 
@@ -118,19 +62,33 @@ function DeleteRoom( $id ) {
 
 function CreateRoom( $obj ) {
 
-    // Make sure everything required is there.
     if( !isset($obj["room_number"]) || !isset($obj["location"]) || !isset($obj["capacity"]) ) {
-        return null;
+        return false;
     }
 
-    // Insert into prepared statement here.
+    if( $obj["room_number"] == '' || $obj["location"] == '' || $obj["capacity"] == '' ) {
+        return false;
+    }
 
+    $query = "INSERT INTO confRoom (room_number, location, capacity) VALUES (?, ?, ?)";
+	
+    $db = OpenCon();
 
-    // bool to check if it was inserted
+    $stmt = $db->prepare($query);
+	$stmt->bind_param('ssi', $obj["room_number"], $obj["location"], $obj["capacity"]);
+    $stmt->execute();
 
-    // if it wasn't because they have duplicate room number return false;
+    CloseCon($db);
 
-    // After return true;
+    if ($stmt->affected_rows > 0) {
+		echo "<p>User information submitted successfully!</p>";
+        return true;
+	} else {
+		echo "<p>An error has occured. <br/> 
+		Please try again later.</p>";
+        return false;
+	}
+
 }
 
 function UpdateRoom( $obj ) {
@@ -149,5 +107,4 @@ function UpdateRoom( $obj ) {
 
     return $statement;
 }
-
 ?>
