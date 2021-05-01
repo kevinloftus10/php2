@@ -18,6 +18,8 @@
         }
 
 	}
+
+    include ("../../templates/header.php");
 ?>
 
 <html>
@@ -49,7 +51,7 @@
     <?php
 
         if($error) {
-            echo "<strong>Please check your room number</strong>";
+            echo "<strong>Please confirm fields</strong>";
         }
 
     ?>

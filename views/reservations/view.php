@@ -25,6 +25,8 @@ if($RequestMethod == "POST") {
         }
     }
 }
+
+include ("../../templates/header.php");
 ?>
 
 <html>

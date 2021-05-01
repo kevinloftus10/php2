@@ -128,7 +128,7 @@ function validObj($obj) {
         return false;
     }
     
-    if( $obj["username"] = "" || $obj["name"] = "" || $obj["password"] = "" || $obj["email"] = "" || $obj["phoneNumber"] = ""){
+    if( $obj["username"] == "" || $obj["name"] == "" || $obj["password"] == "" || $obj["email"] == "" || $obj["phoneNumber"] == ""){
         return false;
     }
 

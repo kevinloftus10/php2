@@ -29,6 +29,8 @@ if($RequestMethod == "POST") {
     }
 }
 
+include ("../../templates/header.php");
+
 ?>
 
 <html>
@@ -40,7 +42,7 @@ if($RequestMethod == "POST") {
 
         <div style="margin-left: auto; margin-right: auto; width:20%;">
             
-            <div style="text-align: center; margin: 10px;">
+            <div style="text-align: center; ">
                 Confirm Password to <span style="color: RED">(DELETE ACCOUNT) </span>
             </div>
         

@@ -17,7 +17,6 @@ $obj["end_time"] = "11:50";
 function CreateReservation( $obj ) {
 
     if(!verify($obj)) {
-        echo "test";
         return false;
     }
  
@@ -150,7 +149,24 @@ function UpdateReservation( $obj ) {
 
 }
 
-function DeleteReservation( $id ) {
+function DeleteReservationByRoom( $roomId ) {
+
+    if($roomId == null) {
+        return false;
+    }
+
+    $db = OpenCon();
+
+    $result = $db->query(sprintf("DELETE FROM reservations WHERE room_number = %s", 
+    $db->real_escape_string($roomId)));
+
+    CloseCon($db);
+
+    if(!$result) {
+        return false;
+    }
+
+    return true;
 
 }
 

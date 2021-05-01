@@ -19,11 +19,19 @@
             $error = true;
         }
 	}
+
+    include ("../../templates/header.php");
 ?>
 
 <html>
 
     <head>
+
+    <style>
+        td {
+            padding: 8px;
+        }
+    </style>
 
     </head>
 
@@ -31,24 +39,37 @@
 
     <form action="" method="POST">
 
-    <label for="room">Create a User:</label>
-</br>
+    <table>
+        <tr>
+            <th>Create a User:</th>
+            <th></th>
+        </tr>
+        
+        <tr>
+            <td>Username:</td>
+            <td><input type="input" id="username" name="username"></td>
+        </tr>
+        
+        <tr>
+            <td>Name:</td>
+            <td><input type="input" id="name" name="name"></td>
+        </tr>
 
-    <label for="username">Username:</label>
-    <input type="input" id="username" name="username">
-</br>
-    <label for="name">Name:</label>
-    <input type="input" id="name" name="name">
-</br>
-    <label for="password">Password:</label>
-    <input type="input" id="password" name="password">
-</br>
-    <label for="email">Email:</label>
-    <input type="input" id="email" name="email">
-</br>
-    <label for="phoneNumber">Phone Number:</label>
-    <input type="input" id="phoneNumber" name="phoneNumber">
+        <tr>
+            <td>Password:</td>
+            <td><input type="input" id="password" name="password"></td>
+        </tr>
 
+        <tr>
+            <td>Email:</td>
+            <td><input type="input" id="email" name="email"></td>
+        </tr>
+
+        <tr>
+            <td>Phone Number:</td>
+            <td><input type="input" id="phoneNumber" name="phoneNumber"></td>
+        </tr>
+    </table>
 
     <input type="submit">
     </form>
@@ -57,10 +78,7 @@
 
         if($error) {
             echo "<strong>Please check your room number</strong>";
-        }elseif(!$error){
-            // window.location = next page
-            header('Location: https://www.google.com');
-        } 
+        }
 
     ?>
 

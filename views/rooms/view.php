@@ -9,21 +9,42 @@ if($RequestMethod == "GET") {
     $arrayToPrint = GetRoom(null);
 }
 
+include ("../../templates/header.php");
+
 ?>
 
 <html>
-    <head> </head>
-       <body>
-           <?php
-            foreach( $arrayToPrint as $val ) { 
-            echo $val["room_number"] . " location; " . $val["location"] . "</br>"; 
-            }
-           ?>
-            </br>
-            </br>
-            <a href="./add.php">Add Room</a></br>
-            <a href="./update.php">Update Room</a></br>
-            <a href="./delete.php">Delete Room</a></br>
+    <head> 
 
-       </body> 
+    <style>
+        td {
+            padding: 8px;
+        }
+    </style>
+
+    </head>
+       <body>
+        <table>
+            <tr>
+                <th>Room #:</th>
+                <th>Location:</th>
+                <th>Capacity:</th>
+            </tr>
+
+           <?php
+
+
+            foreach( $arrayToPrint as $val ) { 
+                echo buildTableElement($val);
+            }
+
+            function buildTableElement($obj) {
+                return "<tr><td>" . $obj["room_number"] . 
+                       "</td><td>" . $obj["location"] . 
+                       "</td><td>" . $obj["capacity"] . "</td></tr>";
+            }
+
+           ?>
+        </table>
+    </body> 
 </html>
