@@ -1,6 +1,5 @@
 <?php
-
-include_once("connect.php");
+include("connect.php");
 
 function GetRoom( $id ) {
     $statement = null;

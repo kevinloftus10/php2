@@ -41,13 +41,15 @@ if($RequestMethod == "POST") {
 	
 
 	?>
+    </select>
 
+    </br>
     <input type="radio" id="viewSelected" name="select" value="Future">
     <label for="Future">Select Future Events</label><br />
     <input type="radio" id="viewAll" name="select" value="All">
     <label for="All">Select All Events</label><br />
 
-</select>
+
 </br>
   <input type="submit">
 </form>
