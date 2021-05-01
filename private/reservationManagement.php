@@ -257,7 +257,7 @@ function verify($obj) {
         return true;
     } 
 
-    while($row = $statement->fetch_object()) {
+    while($row = $result->fetch_object()) {
         
         if($row->reservationID == $obj["reservationID"]) {
             return true;
