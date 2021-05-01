@@ -94,13 +94,17 @@ function CreateRoom( $obj ) {
 function UpdateRoom( $obj ) {
 
     if( !isset($obj["room_number"]) || !isset($obj["location"]) || !isset($obj["capacity"]) ) {
+        echo "blef";
         return null;
     }
 
     $db = OpenCon();
     $statement = $db->query(
-        sprintf("UPDATE confRoom SET location = '%s', capacity = %s WHERE room_number = %s",
-        $db->real_escape_string($obj['location']), $db->real_escape_string($obj['capacity']), $db->real_escape_string($obj['room_number'])
+        sprintf("UPDATE confRoom SET room_number = %s, location = '%s', capacity = %s  WHERE room_number = %s",
+        $db->real_escape_string($obj['new_number']), 
+        $db->real_escape_string($obj['location']), 
+        $db->real_escape_string($obj['capacity']), 
+        $db->real_escape_string($obj['room_number'])
         )
     );
     CloseCon($db);

@@ -4,11 +4,12 @@
 include_once("connect.php");
 
 $obj = [];
+$obj["reservationId"] = 28;
 $obj["username"] = "b";
-$obj["room_number"] = 1;
-$obj["date"] = "2021-05-02";
+$obj["room_number"] = 15;
+$obj["date"] = "2021-05-31";
 $obj["start_time"] = "10:00";
-$obj["end_time"] = "19:00";
+$obj["end_time"] = "15:00";
 
 //var_dump( verify($obj) );
 
@@ -123,6 +124,30 @@ function GetReservations( $confRoomId ) {
     return $resultArray;
 }
 
+function GetReservationsById( $revId ) {
+    if($revId == null) {
+        return false;
+    }
+
+    $db = OpenCon();
+
+    $result = $db->query(
+        sprintf( "SELECT * FROM reservations WHERE reservationID = %s", $revId));
+
+    CloseCon($db);
+
+    while($row = $result->fetch_object()) {
+        $tempArr = [];
+        $tempArr['reservationID'] = $row->reservationID;
+        $tempArr['username'] = $row->username;
+        $tempArr['room_number'] = $row->room_number;
+        $tempArr['date'] = $row->date;
+        $tempArr['start_time'] = $row->start_time;
+        $tempArr['end_time'] = $row->end_time;
+        return $tempArr;
+    }
+}
+
 function compareReservationDates($Obj, $ObjToCompare) {
 
     $difFromObj = new DateTime($Obj['date'] . "T" . $Obj['start_time']);
@@ -136,6 +161,37 @@ function UpdateReservation( $obj ) {
     if(!verify($obj)) {
         return false;
     }
+
+    $db = OpenCon();
+
+    $db->query(
+        sprintf("UPDATE reservations SET username = '%s', room_number = '%s', date = '%s', start_time = '%s', end_time = '%s' WHERE reservationID = '%s'", 
+            $db->real_escape_string($obj["username"]), 
+            $db->real_escape_string($obj["room_number"]),
+            $db->real_escape_string($obj["date"]),  
+            $db->real_escape_string($obj["start_time"]), 
+            $db->real_escape_string($obj["end_time"]),
+            $db->real_escape_string($obj["reservationID"])
+        )
+    );
+
+    CloseCon($db);
+
+    return true;
+}
+
+function UpdateReservationsWithNewRoomNumber($old, $new) {
+
+    $db = OpenCon();
+
+    $db->query(
+        sprintf("UPDATE reservations SET room_number = %s WHERE room_number = %s", 
+        
+        $db->real_escape_string($new),
+        $db->real_escape_string($old)
+    ));
+
+    CloseCon($db);
 }
 
 function DeleteReservationByRoom( $roomId ) {
@@ -200,6 +256,13 @@ function verify($obj) {
     if($result && mysqli_num_rows($result) == 0) {
         return true;
     } 
+
+    while($row = $statement->fetch_object()) {
+        
+        if($row->reservationID == $obj["reservationID"]) {
+            return true;
+        }
+    }
 
     return false;    
 }

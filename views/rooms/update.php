@@ -12,12 +12,14 @@
         include("../../private/reservationManagement.php");
 
         $obj = [];
-        $obj['room_number'] = $_POST["room_num"];
+        $obj['new_number'] = $_POST["room_num"];
+        $obj['room_number'] = $_GET["roomId"];
         $obj['location'] = $_POST['location'];
         $obj['capacity'] = $_POST['capacity'];
 
         if(UpdateRoom($obj)) {
-            header("Location: " . getUrl() . "views/rooms/view.php");       
+            UpdateReservationsWithNewRoomNumber($_GET["roomId"], $_POST["room_num"]);
+            header("Location: " . getUrl() . "views/rooms/view.php");
         }else {
             $error = true;
         }
