@@ -33,7 +33,7 @@ function CheckPassword($username, $pass) {
 
     $db = OpenCon();
 
-    $statement = $db->query( sprintf( "SELECT password FROM user_reg WHERE username = '%s'", $db->real_escape_string($username) ));
+    $statement = $db->query( sprintf( "SELECT * FROM user_reg WHERE username = '%s'", $db->real_escape_string($username) ));
 
     CloseCon($db);
 
@@ -41,14 +41,15 @@ function CheckPassword($username, $pass) {
         return false;
     }
 
-    $row = $statement->fetch_row();
+    $found = false;
 
-    if( $row != null && strcasecmp($row[0], $pass)) {
-        
-        return true;
+    while($row = $statement->fetch_object()) {
+        if($row->password == $pass) {
+            $found = true;
+        }
     }
 
-    return false;
+    return $found;
 }
 
 function GetUsers($username) {
@@ -84,15 +85,14 @@ function GetUsers($username) {
 }
 
 function UpdateUser( $obj ) {
-
     if(!validObj($obj)){
         return false;
     } 
 
     $db = OpenCon();
     $statement = $db->query(
-        sprintf("UPDATE user_reg SET name = %s, password = %s, email = %s, phoneNumber = %s WHERE username = %s",
-        $db->real_escape_string($obj['name']), $db->real_escape_string($obj['email']), $db->real_escape_string($obj['phoneNumber']), $db->real_escape_string($obj['username']) 
+        sprintf("UPDATE user_reg SET name = '%s', password = '%s', email = '%s', phoneNumber = '%s' WHERE username = '%s'",
+        $db->real_escape_string($obj['name']), $db->real_escape_string($obj['password']), $db->real_escape_string($obj['email']), $db->real_escape_string($obj['phoneNumber']), $db->real_escape_string($obj['username']) 
         )
     );
     CloseCon($db);
