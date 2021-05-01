@@ -2,6 +2,7 @@
 <?php
 
 	include ("../../private/roomManagement.php");
+	include ("../../private/reservationManagement.php");
 
 	$RequestMethod = $_SERVER["REQUEST_METHOD"];
 	
