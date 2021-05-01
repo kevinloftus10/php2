@@ -32,6 +32,23 @@ if($RequestMethod == "POST") {
 <html>
 
     <head>
+        <style>
+            .ele {
+                width: 150px;
+                border-width: 1px;
+                border-style: solid;
+                border-color: grey;
+                padding: 8px;
+                border-radius: 10px;
+                float: left;
+                margin: 8px;
+            }
+
+            .ele div {
+                margin: 2px;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -66,14 +83,24 @@ if($RequestMethod == "POST") {
 <?php
 
     foreach( $arrayToPrint as $val ) {
+        echo buildHTMLElement($val);
+    }
 
-        $startTime = new DateTime($val['start_time']);
-        $endTime = new DateTime($val['end_time']);
+    function buildHTMLElement($obj) {
+
+        $startTime = new DateTime($obj['start_time']);
+        $endTime = new DateTime($obj['end_time']);
 
         $dif = $endTime->diff($startTime);
 
-        echo "Date: " . $val["date"] . " Start Time: " . $val['start_time'] . " Length: " . $dif->format("%h hour(s), %i minutes(s)") . " User: " . $val['username'] . " Room #:" . $val['room_number'] . "</br>";
-    }
+        return "<div class='ele'> " .
+            "<div class='date'> Date: " . $obj['date'] . "</div>" .
+            "<div class='room'> Room #: " . $obj['room_number'] . "</div>" .
+            "<div class='user'> Creator: " . $obj['username'] . "</div>" .
+            "<div class='start_time'> Start Time: " . $obj["start_time"] . "</div>" . 
+            "<div class='length'> Meeting Length: </br>". $dif->format("%h hour(s), %i minutes(s)") . "</div>" . 
+            "</div>";
+    } 
 
 ?>
 
