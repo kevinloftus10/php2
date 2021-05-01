@@ -4,14 +4,29 @@
 
 include_once("connect.php");
 
+$obj = [];
+$obj["username"] = "bailey";
+$obj["room_number"] = "10";
+$obj["date"] = "2021-02-03";
+$obj[""]
+
+
 function CreateReservation( $obj ) {
 
-    if(!isset($obj["username"]) || !isset($obj["room_number"]) || !isset($obj["date"]) || !isset($obj["start_time"]) || !isset($obj["end_time"])) {
+    if(!verify($obj)) {
         return false;
     }
-
+ 
+    $query = "INSERT INTO reservations (username, room_number, date, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+    $db = OpenCon();
     
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('sssss', $obj["username"], $obj["room_number"], $obj["date"], $obj["start_time"], $obj["end_time"]);
+    $stmt->execute();
+    
+    CloseCon($db);
 
+    return true;
 }
 
 function GetReservations( $confRoomId ) {
@@ -75,10 +90,48 @@ function compareReservationDates($Obj, $ObjToCompare) {
 
 function UpdateReservation( $obj ) {
 
+    if(!verify($obj)) {
+        return false;
+    }
 
 }
 
 function DeleteReservation( $id ) {
 
 }
+
+function verify($obj) {
+    if(!isset($obj["username"]) || !isset($obj["room_number"]) || !isset($obj["date"]) || !isset($obj["start_time"]) || !isset($obj["end_time"])) {
+        return false;
+    }
+
+    $db = OpenCon();
+
+    $result = $db->query(
+        sprintf("SELECT COUNT(*) FROM reservations WHERE room_number = %s AND date = %s AND (start_time BETWEEN %s AND %s OR end_time BETWEEN %s AND %s)",
+        $db->real_escape_string($obj["room_number"]), 
+        $db->real_escape_string($obj["date"]), 
+        $db->real_escape_string($obj["start_time"]),
+        $db->real_escape_string($obj["end_time"]), 
+        $db->real_escape_string($obj["start_time"]),
+        $db->real_escape_string($obj["end_time"])
+    ));
+        
+    CloseCon($db);
+
+    if(!$result) {
+        return false;
+    }
+
+    $row = mysqli_fetch_assoc($result);
+    $count = $row["count(*)"];
+    
+    if($count > 0) {
+        // There is already a valid reservation
+        return false;
+    }
+        
+    return true;
+}
+
 ?>

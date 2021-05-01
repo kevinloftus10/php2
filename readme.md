@@ -11,14 +11,13 @@ Requirements:
 
 
 Conference Rooms:
-The application should allow a user to maintain a list of conference rooms.
-Create a new table in your database to store a list of conference rooms.
-Create the web pages necessary to list, add and delete conference rooms.
-Insert at least three conference rooms to start with.
-Only allow reservations during dates and times that are not already reserved. Conference rooms cannot be double booked.
+The application should allow a user to maintain a list of conference rooms. - in progress (add page done/tested)
+Create a new table in your database to store a list of conference rooms.  - done
+Create the web pages necessary to list, add and delete conference rooms. - (add done/tested)
+Only allow reservations during dates and times that are not already reserved. Conference rooms cannot be double booked. - done testing rn
 The list of conference room reservations should have two display options.
-    All - display all conference room reservation schedules; past and future.
-    Future - display conference room reservations that are scheduled in the future only.
+    All - display all conference room reservation schedules; past and future. - done (just display them)
+    Future - display conference room reservations that are scheduled in the future only. - done (just display them)
 
 Reservations:
 The application should allow a user to reserve a conference room for a specified date and time range.

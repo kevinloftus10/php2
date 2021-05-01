@@ -11,7 +11,11 @@ if($RequestMethod == "GET") {
 }
 
 if($RequestMethod == "POST") {
-    $arrayToPrint = GetReservations($_POST['roomId']);
+    if($_POST['viewSelected'] == "Future") {
+        $arrayToPrint = GetReservations($_POST['roomId']);
+    }else {
+        $arrayToPrint = GetAllReservations($_POST['roomId']);    
+    }
 }
 
 ?>
