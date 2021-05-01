@@ -94,30 +94,14 @@ function getUrl() {
             <ul>
                 <li><a href="<?php echo getUrl() . "views/reservations/view.php"; ?>">Reservations</a>
 
-                    <ul>
-                        <li><a href="<?php echo getUrl() . "views/reservations/add.php"; ?>">Add</a></li>
-                        <li><a href="<?php echo getUrl() . "views/reservations/update.php"; ?>">Update</a></li>
-                        <li><a href="<?php echo getUrl() . "views/reservations/delete.php"; ?>">Delete</a></li>
-                    </ul>
-
                 </li>
 
                 <li><a href="<?php echo getUrl() . "views/rooms/view.php"; ?>">Rooms</a>
-
-                    <ul>
-                        <li><a href="<?php echo getUrl() . "views/rooms/add.php"; ?>">Add</a></li>
-                        <li><a href="<?php echo getUrl() . "views/rooms/update.php"; ?>">Update</a></li>
-                        <li><a href="<?php echo getUrl() . "views/rooms/delete.php"; ?>">Delete</a></li>
-                    </ul>
 
                 </li>
 
                 <li><a href="<?php echo getUrl() . "views/users/view.php"; ?>">Users</a>
 
-                    <ul>
-                        <li><a href="<?php echo getUrl() . "views/users/add.php"; ?>">Add</a></li>
-                        <li><a href="<?php echo getUrl() . "views/users/update.php"; ?>">Update</a></li>
-                    </ul>
 
                 </li>
 

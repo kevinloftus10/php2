@@ -11,7 +11,7 @@
     <head>
     <style>
         td {
-            padding: 8px;
+            padding: 12px;
         }
     </style>
     </head>
@@ -24,7 +24,8 @@
                 <th>Name:</th>
                 <th>Email:</th>
                 <th>Phone #:</th>
-                <th>Delete</th>
+                <th>Edit:</th>
+                <th>Delete:</th>
             </tr>
 
            <?php
@@ -40,7 +41,8 @@
                        "</td><td>" . $obj["name"] . 
                        "</td><td>" . $obj["email"] . "</td>" .
                        "<td>" . $obj["phoneNumber"] . "</td>" .
-                       "<td><a href='" .  getUrl() . "/views/users/delete.php?username=" . $obj["username"] . "'> Delete</a>" .
+                       "<td><a href='" .  getUrl() . "views/users/update.php?username=" . $obj["username"] . "'>Edit</a></td>" .
+                       "<td><a href='" .  getUrl() . "views/users/delete.php?username=" . $obj["username"] . "'>Delete</a></td>" .
                        "</tr>";
             }
 

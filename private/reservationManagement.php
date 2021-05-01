@@ -1,17 +1,17 @@
 <?php
 
 
-
 include_once("connect.php");
 
 $obj = [];
-$obj["username"] = "bailey";
-$obj["room_number"] = "10";
-$obj["date"] = "2021-02-03";
-$obj["start_time"] = "11:30";
-$obj["end_time"] = "11:50";
+$obj["reservationId"] = 28;
+$obj["username"] = "b";
+$obj["room_number"] = 15;
+$obj["date"] = "2021-05-31";
+$obj["start_time"] = "10:00";
+$obj["end_time"] = "15:00";
 
-//var_dump (CreateReservation($obj));
+//var_dump( verify($obj) );
 
 
 function CreateReservation( $obj ) {
@@ -76,10 +76,7 @@ function GetAllReservations( $confRoomId ){
 
     usort($resultArray, "compareReservationDates");
 
-
     return $resultArray;
-
-
 }
 
 function GetReservations( $confRoomId ) {
@@ -100,7 +97,6 @@ function GetReservations( $confRoomId ) {
         $statement = $db->query("SELECT * FROM reservations WHERE date > '" . $currentTime->format( 'Y-m-d' ) . "'");
     }
 
- 
     // Close the connection
     CloseCon($db);
 
@@ -125,10 +121,31 @@ function GetReservations( $confRoomId ) {
 
     usort($resultArray, "compareReservationDates");
 
-
     return $resultArray;
+}
 
+function GetReservationsById( $revId ) {
+    if($revId == null) {
+        return false;
+    }
 
+    $db = OpenCon();
+
+    $result = $db->query(
+        sprintf( "SELECT * FROM reservations WHERE reservationID = %s", $revId));
+
+    CloseCon($db);
+
+    while($row = $result->fetch_object()) {
+        $tempArr = [];
+        $tempArr['reservationID'] = $row->reservationID;
+        $tempArr['username'] = $row->username;
+        $tempArr['room_number'] = $row->room_number;
+        $tempArr['date'] = $row->date;
+        $tempArr['start_time'] = $row->start_time;
+        $tempArr['end_time'] = $row->end_time;
+        return $tempArr;
+    }
 }
 
 function compareReservationDates($Obj, $ObjToCompare) {
@@ -138,15 +155,43 @@ function compareReservationDates($Obj, $ObjToCompare) {
     $difFromObjToCompare =  new DateTime($ObjToCompare['date'] . "T" . $ObjToCompare['start_time']);
 
     return ($difFromObj < $difFromObjToCompare) ? -1 : 1;
-
 }
 
 function UpdateReservation( $obj ) {
-
     if(!verify($obj)) {
         return false;
     }
 
+    $db = OpenCon();
+
+    $db->query(
+        sprintf("UPDATE reservations SET username = '%s', room_number = '%s', date = '%s', start_time = '%s', end_time = '%s' WHERE reservationID = '%s'", 
+            $db->real_escape_string($obj["username"]), 
+            $db->real_escape_string($obj["room_number"]),
+            $db->real_escape_string($obj["date"]),  
+            $db->real_escape_string($obj["start_time"]), 
+            $db->real_escape_string($obj["end_time"]),
+            $db->real_escape_string($obj["reservationID"])
+        )
+    );
+
+    CloseCon($db);
+
+    return true;
+}
+
+function UpdateReservationsWithNewRoomNumber($old, $new) {
+
+    $db = OpenCon();
+
+    $db->query(
+        sprintf("UPDATE reservations SET room_number = %s WHERE room_number = %s", 
+        
+        $db->real_escape_string($new),
+        $db->real_escape_string($old)
+    ));
+
+    CloseCon($db);
 }
 
 function DeleteReservationByRoom( $roomId ) {
@@ -167,7 +212,6 @@ function DeleteReservationByRoom( $roomId ) {
     }
 
     return true;
-
 }
 
 function verify($obj) {
@@ -175,6 +219,14 @@ function verify($obj) {
         return false;
     }
 
+    $date = new DateTime($obj['date']);
+
+    // Check if not sat or sunday.
+    if($date->format("w") == 6 || $date->format("w") == 0) {
+        return false;
+    }
+
+    // Confirm it is between normal work hours
     $workHourStart = new DateTime($obj['date'] . "T" . "08:00");
     $workHourEnd = new DateTime($obj['date'] . "T" . "17:00");
 
@@ -183,14 +235,14 @@ function verify($obj) {
 
     if($startTime < $workHourStart || $startTime > $workHourEnd 
       || $endTime < $workHourStart || $endTime > $workHourEnd) {
-          echo "test";
         return false;
     }
 
     $db = OpenCon();
 
+    // Confirm there are no other reservations on that room at that time
     $result = $db->query(
-        sprintf("SELECT COUNT(*) FROM reservations WHERE room_number = %s AND date = %s AND (start_time BETWEEN %s AND %s OR end_time BETWEEN %s AND %s)",
+        sprintf("SELECT * FROM reservations WHERE room_number = '%s' AND date = '%s' AND (start_time BETWEEN '%s' AND '%s' OR end_time BETWEEN '%s' AND '%s')",
         $db->real_escape_string($obj["room_number"]), 
         $db->real_escape_string($obj["date"]), 
         $db->real_escape_string($obj["start_time"]),
@@ -198,11 +250,21 @@ function verify($obj) {
         $db->real_escape_string($obj["start_time"]),
         $db->real_escape_string($obj["end_time"])
     ));
-        
+
     CloseCon($db);
 
+    if($result && mysqli_num_rows($result) == 0) {
+        return true;
+    } 
+
+    while($row = $statement->fetch_object()) {
         
-    return $result;
+        if($row->reservationID == $obj["reservationID"]) {
+            return true;
+        }
+    }
+
+    return false;    
 }
 
 ?>
