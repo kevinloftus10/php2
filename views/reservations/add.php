@@ -5,14 +5,27 @@
 	include ("../../private/reservationManagement.php");
 	include ("../../private/userManagement.php");
 
-	$RequestMethod = $_SERVER["REQUEST_METHOD"];
-	
-	if($RequestMethod == "POST") {
-		echo "POSTED";
-	}
-
 	include ("../../templates/header.php");
 
+	$RequestMethod = $_SERVER["REQUEST_METHOD"];
+
+	$error = false;
+
+	if($RequestMethod == "POST") {
+
+		$obj = [];
+		$obj["username"] = $_POST["organizer"];
+		$obj["room_number"] = $_POST["room"];
+		$obj["date"] = $_POST["date"];
+		$obj["start_time"] = $_POST["start_time"];
+		$obj["end_time"] = $_POST["end_time"];
+
+		if(CreateReservation($obj)) {
+			header( "Location: " . getUrl() . "views/reservations/view.php" );
+		}else {
+			$error = true;
+		}
+	}
 ?>
 
 <!doctype html>
@@ -37,56 +50,79 @@
 			padding: 3px;
 			}
 
-			</style>
+        	td {
+        	    padding: 12px;
+        	}
+
+		</style>
 
 	</head>
 
 	<body>
 	
+		<h3>Add a reservation:</h3>
 		<form action="" method="POST">
 			
-		  	<label for="room">Please Select a room:</label></br>
-			
-			<select name="room" id="room">
-				<?php
-				foreach( GetRoom(null) as $val ) {
-					echo "<option value='" . $val["room_number"] . "'>" . $val["room_number"] . " @ " . $val["location"] . "</option>";
-				}
-			
-			
-				?>
-			</select>
-			
-			</br>
-			</br>
-			
-			<label>Select a time:</label>
-			</br>
-			  	<input type="date" id="date" name="date">
-				<input type="time" id="time" name="time">
-			</br>
-			</br>
+			<table>
+				<tr>
+					<td>Please Select a room:</td>
+					<td>
+						<select name="room" id="room">
+							<?php
+							foreach( GetRoom(null) as $val ) {
+								echo "<option value='" . $val["room_number"] . "'>" . $val["room_number"] . " @ " . $val["location"] . "</option>";
+							}
+							?>
+						</select>
+					</td>
+				</tr>
 
-			<label>Organizer:</label>
-			</br>
-			<select>
-				<?php
-				foreach( GetUsers(null) as $val ) {
-					echo "<option value='" . $val['username'] . "'>" . $val['username'] . "</option>";
-				}
-				?>
-			</select>
+				<tr>
+					<td>Select Date:</td>
+					<td><input type="date" id="date" name="date"></td>
+				</tr>
 
-			</br>
-			</br>
-			<label>(user's password required)</label></br>
-			<input type="password" value="example"/>
+		  		<tr>
+					<td>Start Time:</td>
+					<td><input type="time" id="time" name="start_time"></td>
+				</tr>
+
+				<tr>
+					<td>End Time:</td>
+					<td><input type="time" id="time" name="end_time"></td>
+				</tr>
+
+				<tr>
+					<td>Organizer:</td>
+					<td>
+						<select name="organizer">
+							<?php
+							foreach( GetUsers(null) as $val ) {
+								echo "<option value='" . $val['username'] . "'>" . $val['username'] . "</option>";
+							}
+							?>
+						</select>
+					</td>
+				</tr>
+
 				
+				<tr>
+					<td><b>(user's password required)</b></td>
+					<td><input type="password" value="example"/></td>
+				</tr>
+			</table>
+
 			</br>
 			</br>
 			<input type="submit">
 		</form>
 		
+		<?php 
+			if($error) {
+				echo "<strong>Please check that: </br> All fields are filled out </br> User's password is correct </br> You aren't double booking a room </br> and scheduling during the weekend or non business hours (8 am - 5 pm)";
+			}
+		?>
+
 	</body>
 
 </html>

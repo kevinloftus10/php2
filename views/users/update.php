@@ -27,7 +27,7 @@
             $obj['phoneNumber'] = $_POST['phoneNumber'];
 
             if(UpdateUser($obj)) {
-                $error = false;
+                header( "Location: " . getUrl() . "views/users/view.php" );
             }else {
                 $error = true;
             }

@@ -45,13 +45,17 @@ include ("../../templates/header.php");
             }
 
             .ele div {
-                margin: 2px;
+                margin: 5px;
             }
 
         </style>
     </head>
 
     <body>
+
+    <a href='<?php echo getUrl() . "views/reservations/add.php" ?>'>Add Reservation</a>
+    </br>
+    </br>
 
     <form action="" method="POST">
 
@@ -100,7 +104,9 @@ include ("../../templates/header.php");
             "<div class='room'> Room #: " . $obj['room_number'] . "</div>" .
             "<div class='user'> Creator: " . $obj['username'] . "</div>" .
             "<div class='start_time'> Start Time: " . $obj["start_time"] . "</div>" . 
-            "<div class='length'> Meeting Length: </br>". $dif->format("%h hour(s), %i minutes(s)") . "</div>" . 
+            "<div class='length'> Meeting Length: </br>". $dif->format("%h hour(s), %i minutes(s)") . "</div></br>" . 
+            "<a href='" . getUrl() . "views/reservations/update.php?revId=" . $obj["reservationID"] . "'>Edit</a></br></br>" . 
+            "<a href='" . getUrl() . "views/reservations/delete.php?revId=" . $obj["reservationID"] . "'>Delete</a>" . 
             "</div>";
     } 
 ?>
