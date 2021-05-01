@@ -49,7 +49,6 @@ if($RequestMethod == "POST") {
 	
 
 	?>
-
     <option value="null" selected>All Rooms</options>
 
 </select>
