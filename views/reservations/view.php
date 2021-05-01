@@ -25,8 +25,6 @@ if($RequestMethod == "POST") {
         }
     }
 }
-
-
 ?>
 
 <html>
@@ -91,7 +89,9 @@ if($RequestMethod == "POST") {
         $startTime = new DateTime($obj['start_time']);
         $endTime = new DateTime($obj['end_time']);
 
-        $dif = $endTime->diff($startTime);
+        $dif = $startTime->diff($endTime);
+
+        $currentDay = new DateTime("NOW");
 
         return "<div class='ele'> " .
             "<div class='date'> Date: " . $obj['date'] . "</div>" .
@@ -101,9 +101,7 @@ if($RequestMethod == "POST") {
             "<div class='length'> Meeting Length: </br>". $dif->format("%h hour(s), %i minutes(s)") . "</div>" . 
             "</div>";
     } 
-
 ?>
-
     </body>
 
 </html>

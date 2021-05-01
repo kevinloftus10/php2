@@ -4,97 +4,122 @@ include_once("connect.php");
 
 function SignUp( $obj ) {
 
-if(!validObj($obj)){
-    return false;
-} 
+    if(!validObj($obj)){
+        return false;
+    } 
 
-$query = "INSERT INTO user_reg (username, name, password, email, phoneNumber) VALUES (?, ?, ?, ?, ?)";
-$db = OpenCon();
+    $query = "INSERT INTO user_reg (username, name, password, email, phoneNumber) VALUES (?, ?, ?, ?, ?)";
+    $db = OpenCon();
 
-$stmt = $db->prepare($query);
-$stmt->bind_param('sssss', $obj["username"], $obj["name"], $obj["password"], $obj["email"], $obj["phoneNumber"]);
-$stmt->execute();
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('sssss', $obj["username"], $obj["name"], $obj["password"], $obj["email"], $obj["phoneNumber"]);
+    $stmt->execute();
 
-CloseCon($db);
+    CloseCon($db);
 
-if ($stmt->affected_rows >0) {
-    return true;
-} else {
-    return false;
+    if ($stmt->affected_rows >0) {
+        return true;
+    } else {
+        return false;
+    }
+
 }
 
+function CheckPassword($username, $pass) {
+
+    if($username == null || $pass == null || $username == "" || $pass == "") {
+        return false;
+    }
+
+    $db = OpenCon();
+
+    $statement = $db->query( sprintf( "SELECT password FROM user_reg WHERE username = '%s'", $db->real_escape_string($username) ));
+
+    CloseCon($db);
+
+    if(!$statement) {
+        return false;
+    }
+
+    $row = $statement->fetch_row();
+
+    if( $row != null && strcasecmp($row[0], $pass)) {
+        
+        return true;
+    }
+
+    return false;
 }
 
 function GetUsers($username) {
-$statement = null;
+    $statement = null;
 
-$db = OpenCon();
+    $db = OpenCon();
 
-if ($username == null){
-    $statement = $db->query("SELECT * FROM user_reg");
-} else {
-    $statement = $db->query(sprintf("SELECT * FROM user_reg WHERE username = '%s'", $db->real_escape_string($username)));
-}
+    if ($username == null){
+        $statement = $db->query("SELECT * FROM user_reg");
+    } else {
+        $statement = $db->query(sprintf("SELECT * FROM user_reg WHERE username = '%s'", $db->real_escape_string($username)));
+    }
 
-CloseCon($db);
+    CloseCon($db);
 
-if(!$statement) {
-    return false;
-}
+    if(!$statement) {
+        return false;
+    }
 
-$resultArray = array();
-$index = 0;
-while($row = $statement->fetch_object()) {
-    $tempArr = [];
-    $tempArr['username'] = $row->username;
-    $tempArr['name'] = $row->name;
-    $tempArr['email'] = $row->email;
-    $tempArr['phoneNumber'] = $row->phoneNumber;
-    $resultArray[$index] = $tempArr;
-    $index++;
-}
+    $resultArray = array();
+    $index = 0;
+    while($row = $statement->fetch_object()) {
+        $tempArr = [];
+        $tempArr['username'] = $row->username;
+        $tempArr['name'] = $row->name;
+        $tempArr['email'] = $row->email;
+        $tempArr['phoneNumber'] = $row->phoneNumber;
+        $resultArray[$index] = $tempArr;
+        $index++;
+    }
 
-return $resultArray;
-
+    return $resultArray;
 }
 
 function UpdateUser( $obj ) {
 
-if(!validObj($obj)){
-    return false;
-} 
+    if(!validObj($obj)){
+        return false;
+    } 
 
-$db = OpenCon();
-$statement = $db->query(
-    sprintf("UPDATE user_reg SET name = %s, password = %s, email = %s, phoneNumber = %s WHERE username = %s",
-    $db->real_escape_string($obj['name']), $db->real_escape_string($obj['email']), $db->real_escape_string($obj['phoneNumber']), $db->real_escape_string($obj['username']) 
-    )
-);
-CloseCon($db);
+    $db = OpenCon();
+    $statement = $db->query(
+        sprintf("UPDATE user_reg SET name = %s, password = %s, email = %s, phoneNumber = %s WHERE username = %s",
+        $db->real_escape_string($obj['name']), $db->real_escape_string($obj['email']), $db->real_escape_string($obj['phoneNumber']), $db->real_escape_string($obj['username']) 
+        )
+    );
+    CloseCon($db);
 
-return $statement;
+    return $statement;
 
 }
 
 function DeleteUser( $id ) {
 
-if($id == null) {
-    return false;
-}
+    if($id == null) {
+        return false;
+    }
 
-$db = OpenCon();
+    $db = OpenCon();
 
-$statement = $db->query(
-    sprintf("DELETE FROM user_reg WHERE username = '%s'",
-    $db->real_escape_string($id)));
+    $statement = $db->query(
+        sprintf("DELETE FROM user_reg WHERE username = '%s'",
+        $db->real_escape_string($id)));
 
-CloseCon($db);
+    CloseCon($db);
 
-if(!$statement) {
-    return false;
-}
+    if(!$statement) {
+        return false;
+    }
 
-return true;
+    return true;
 
 }
 
