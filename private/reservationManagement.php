@@ -8,12 +8,16 @@ $obj = [];
 $obj["username"] = "bailey";
 $obj["room_number"] = "10";
 $obj["date"] = "2021-02-03";
-$obj[""]
+$obj["start_time"] = "11:30";
+$obj["end_time"] = "11:50";
+
+//var_dump (CreateReservation($obj));
 
 
 function CreateReservation( $obj ) {
 
     if(!verify($obj)) {
+        echo "test";
         return false;
     }
  
@@ -155,6 +159,18 @@ function verify($obj) {
         return false;
     }
 
+    $workHourStart = new DateTime($obj['date'] . "T" . "08:00");
+    $workHourEnd = new DateTime($obj['date'] . "T" . "17:00");
+
+    $startTime = new DateTime($obj['date'] . "T" . $obj['start_time']);
+    $endTime = new DateTime($obj['date'] . "T" . $obj['end_time']);
+
+    if($startTime < $workHourStart || $startTime > $workHourEnd 
+      || $endTime < $workHourStart || $endTime > $workHourEnd) {
+          echo "test";
+        return false;
+    }
+
     $db = OpenCon();
 
     $result = $db->query(
@@ -169,19 +185,8 @@ function verify($obj) {
         
     CloseCon($db);
 
-    if(!$result) {
-        return false;
-    }
-
-    $row = mysqli_fetch_assoc($result);
-    $count = $row["count(*)"];
-    
-    if($count > 0) {
-        // There is already a valid reservation
-        return false;
-    }
         
-    return true;
+    return $result;
 }
 
 ?>

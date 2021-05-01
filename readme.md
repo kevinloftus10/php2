@@ -20,11 +20,11 @@ The list of conference room reservations should have two display options.
     Future - display conference room reservations that are scheduled in the future only. - done (just display them)
 
 Reservations:
-The application should allow a user to reserve a conference room for a specified date and time range.
-The application should allow a user to select a conference room from the list of conference rooms and specify the date and time range for their reservation.
-The specified date and time range for the reservation should include the start and end date and times.
-Only allow reservations on the same day. Reservations cannot span days.
-Only allow reservations during the business hours of 8:00am to 5:00pm on weekdays.
+The application should allow a user to reserve a conference room for a specified date and time range. done 
+The application should allow a user to select a conference room from the list of conference rooms and specify the date and time range for their reservation. - done
+The specified date and time range for the reservation should include the start and end date and times. - done?
+Only allow reservations on the same day. Reservations cannot span days. - done
+Only allow reservations during the business hours of 8:00am to 5:00pm on weekdays. - done
 Do not allow reservations outside of business hours or during the weekends.
 Verify that all user input is correct.
 Display error messages where appropriate.

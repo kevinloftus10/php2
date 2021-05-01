@@ -12,9 +12,17 @@ if($RequestMethod == "GET") {
 
 if($RequestMethod == "POST") {
     if($_POST['select'] == "Future") {
-        $arrayToPrint = GetReservations($_POST['roomId']);
+        if($_POST['roomId'] == "null") {
+            $arrayToPrint = GetReservations(null);
+        }else {
+            $arrayToPrint = GetReservations($_POST['roomId']);
+        }
     }else {
-        $arrayToPrint = GetAllReservations($_POST['roomId']);    
+        if($_POST['roomId'] == "null") {
+            $arrayToPrint = GetAllReservations(null);
+        }else {
+            $arrayToPrint = GetAllReservations($_POST['roomId']);
+        }
     }
 }
 
@@ -42,12 +50,16 @@ if($RequestMethod == "POST") {
 
 	?>
 
-    <input type="radio" id="viewSelected" name="select" value="Future">
+    <option value="null" selected>All Rooms</options>
+
+</select>
+
+    <div> Event Date Selection </div>
+    </br>
+    <input type="radio" id="viewSelected" name="select" value="Future" checked="checked">
     <label for="Future">Select Future Events</label><br />
     <input type="radio" id="viewAll" name="select" value="All">
     <label for="All">Select All Events</label><br />
-
-</select>
 </br>
   <input type="submit">
 </form>
@@ -55,7 +67,13 @@ if($RequestMethod == "POST") {
 <?php
 
     foreach( $arrayToPrint as $val ) {
-        echo "Date: " . $val["date"] . " Start time: " . $val['start_time'] . " End time: " . $val["end_time"] . " User: " . $val['username'] . " Room #:" . $val['room_number'] . "</br>";
+
+        $startTime = new DateTime($val['start_time']);
+        $endTime = new DateTime($val['end_time']);
+
+        $dif = $endTime->diff($startTime);
+
+        echo "Date: " . $val["date"] . " Start Time: " . $val['start_time'] . " Length: " . $dif->format("%h hour(s), %i minutes(s)") . " User: " . $val['username'] . " Room #:" . $val['room_number'] . "</br>";
     }
 
 ?>
