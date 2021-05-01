@@ -11,12 +11,13 @@ if($RequestMethod == "GET") {
 }
 
 if($RequestMethod == "POST") {
-    if($_POST['viewSelected'] == "Future") {
+    if($_POST['select'] == "Future") {
         $arrayToPrint = GetReservations($_POST['roomId']);
     }else {
         $arrayToPrint = GetAllReservations($_POST['roomId']);    
     }
 }
+
 
 ?>
 
@@ -40,6 +41,12 @@ if($RequestMethod == "POST") {
 	
 
 	?>
+
+    <input type="radio" id="viewSelected" name="select" value="Future">
+    <label for="Future">Select Future Events</label><br />
+    <input type="radio" id="viewAll" name="select" value="All">
+    <label for="All">Select All Events</label><br />
+
 </select>
 </br>
   <input type="submit">
